@@ -1,0 +1,6 @@
+Useful commands:
+*  ppk          print the container public key
+*  vpn-up       open a VPN connection to the cluster
+*  vpn-down     close the VPN connection
+*  vpn-status   check the VPN connection status
+*  help         see this message again
