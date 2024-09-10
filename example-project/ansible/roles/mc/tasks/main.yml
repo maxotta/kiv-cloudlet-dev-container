@@ -1,0 +1,12 @@
+# Install Midnight Commander
+
+- debug:
+    msg: "Installing Midnight Commander..."
+
+- name: Install Midnight Commander
+  apt:
+    name: mc
+    state: present
+
+- debug:
+    msg: "Midnight Commander was installed successfully!"
