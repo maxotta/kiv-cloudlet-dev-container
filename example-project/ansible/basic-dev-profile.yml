@@ -1,0 +1,7 @@
+# Basic development environment profile playbook
+
+  - name: Install MC on my nodes
+    hosts: rpi-cluster
+    become: true
+    roles:
+      - mc
