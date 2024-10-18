@@ -1,0 +1,7 @@
+# Basic example profile playbook
+
+  - name: Install Midnight Commander on all cluster nodes
+    hosts: all
+    become: true
+    roles:
+      - mc

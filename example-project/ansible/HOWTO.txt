@@ -1,0 +1,7 @@
+To run the provided Ansible example use:
+
+vpn-up
+cd ansible
+ansible-playbook -i inventory.yml example-cluster-profile.yml
+
+
