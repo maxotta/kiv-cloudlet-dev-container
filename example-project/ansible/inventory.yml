@@ -1,0 +1,11 @@
+---
+all:
+  hosts:
+    pi1:
+    pi2:
+    pi3:
+    pi4:
+    pi5:
+  vars:
+    ansible_ssh_user: '{{ lookup("env", "ANSIBLE_USERNAME") }}'
+    ansible_password: '{{ lookup("env", "ANSIBLE_PASSWORD") }}'

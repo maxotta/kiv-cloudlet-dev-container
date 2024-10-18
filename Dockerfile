@@ -1,5 +1,5 @@
 FROM ubuntu:20.04
-LABEL maintainer="maxmilio@kiv.zcu.cz" \
+LABEL maintainer="maxmilio@kiv.zcu.cz"
       org.opencontainers.image.source="https://github.com/maxotta/kiv-cloudlet-dev-container"
 
 ARG WORKSPACE_DIR=/workspace
@@ -7,6 +7,8 @@ ARG WORKSPACE_DIR=/workspace
 ARG PERSISTENT_DATA_DIR=/var/kiv-cloudlet-dev-container-data
 # Volume for mounting the OpenVPN configuration file into the container
 ARG OPENVPN_CONFIG=/etc/OpenVPN-Config.ovpn
+# Volume for passing environment variables
+ARG ENV_CONFIG=/etc/.env
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -16,9 +18,18 @@ RUN set -uex; \
     apt-get -y install gnupg software-properties-common ca-certificates curl apt-transport-https ; \
     mkdir -p /etc/apt/keyrings
 
+# Add HashiCorp repos and install Terraform
+RUN set -uex; \
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg ; \
+    gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint ; \
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list ; \
+    apt-get update ;\
+    apt-get -y install terraform
+
 # Install Python toolset, Ansible and Docker libraries
-RUN apt-get -y install git python3 python3-pip pipenv
-RUN pip install ansible
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get -y install git python3.9 python3-pip pipenv
+RUN pip install ansible ansible-lint
 RUN pip install docker
 
 RUN apt-get -y install sshpass
@@ -31,20 +42,22 @@ RUN apt-get -y install lolcat
 COPY init-dev-container.sh /etc
 COPY help.txt /etc
 
-RUN echo '. /etc/init-dev-container.sh' >> /root/.bashrc
+RUN echo '. /etc/init-dev-container.sh' >> /root/.bashrc ; \
+    echo 'export TF_VAR_vm_ssh_pubkey="`cat ${PERSISTENT_DATA_DIR}/id_ecdsa.pub`"' >> /root/.bashrc
 
 WORKDIR ${WORKSPACE_DIR}
 
 VOLUME ${WORKSPACE_DIR} ${PERSISTENT_DATA_DIR}
-VOLUME ${PROJECT_DIR}/vpn/OpenVPN-Config.ovpn ${OPENVPN_CONFIG}
+VOLUME ${PROJECT_DIR}/config/OpenVPN-Config.ovpn ${OPENVPN_CONFIG}
+VOLUME ${PROJECT_DIR}/config/.env ${ENV_CONFIG}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV PERSISTENT_DATA_DIR ${PERSISTENT_DATA_DIR}
 ENV OPENVPN_CONFIG ${OPENVPN_CONFIG}
+ENV ENV_CONFIG ${ENV_CONFIG}
 ENV SHELL /bin/bash
 ENV ANSIBLE_HOST_KEY_CHECKING False
 
 # Prevent the container to exit
 CMD [ "sleep", "infinity" ]
-

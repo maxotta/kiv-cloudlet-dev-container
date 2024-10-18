@@ -15,6 +15,7 @@
           "mohsen1.prettify-json",
           "ms-python.vscode-pylance",
           "ms-python.python",
+          "HashiCorp.terraform",
           "redhat.ansible"]
     }
   }
