@@ -1,5 +1,5 @@
 FROM ubuntu:20.04
-LABEL maintainer="maxmilio@kiv.zcu.cz"
+LABEL maintainer="maxmilio@kiv.zcu.cz" \
       org.opencontainers.image.source="https://github.com/maxotta/kiv-cloudlet-dev-container"
 
 ARG WORKSPACE_DIR=/workspace
