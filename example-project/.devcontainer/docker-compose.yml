@@ -1,15 +1,14 @@
-version: "3"
 services:
-  kiv-cloudlet-dev-container:
-    container_name: KivCloudletDevContainer
+  cloudlet-dev-container:
+    container_name: CloudletDevContainer
     image: ghcr.io/maxotta/kiv-cloudlet-dev-container:latest
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun
     volumes:
-      - "kiv-cloudlet-dev-container-data:/var/kiv-cloudlet-dev-container-data"
-      - "../vpn/OpenVPN-Config.ovpn:/etc/OpenVPN-Config.ovpn:ro"
+      - "cloudlet-dev-container-data:/var/cloudlet-dev-container-data"
+      - "../config:/etc/cloudlet-config:ro"
       - "../..:/workspace"
     extra_hosts:
       - "gw:10.88.99.254"
@@ -19,6 +18,6 @@ services:
       - "pi4:10.88.99.4"
       - "pi5:10.88.99.5"
 volumes:
-  kiv-cloudlet-dev-container-data:
+  cloudlet-dev-container-data:
     external: false
 
