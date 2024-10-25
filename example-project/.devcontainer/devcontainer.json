@@ -1,7 +1,7 @@
 {
-  "name": "KIV CLoudlet Development Container",
+  "name": "Cloudlet Development Container",
   "dockerComposeFile": "docker-compose.yml",
-  "service": "kiv-cloudlet-dev-container",
+  "service": "cloudlet-dev-container",
   "workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
   "containerEnv": {
     "PROJECT_DIR": "/workspace/${localWorkspaceFolderBasename}"

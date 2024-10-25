@@ -11,9 +11,8 @@ set +a
 
 alias ppk="cat ${PERSISTENT_DATA_DIR}/id_ecdsa.pub"
 alias vpn-status='(ping -q -w 2 -c 3 gw >/dev/null && echo "VPN is up.") || echo "VPN is down."'
-alias vpn-up="openvpn --config ${OPENVPN_CONFIG} --daemon ; sleep 5 ; vpn-status"
+alias vpn-up="openvpn --config ${OPENVPN_CONFIG} --dev tun --daemon ; sleep 5 ; vpn-status"
 alias vpn-down='pkill openvpn'
 alias help="cat /etc/help.txt | cowsay -n | lolcat"
 
-cat /etc/help.txt | cowsay -n | lolcat
-
+help

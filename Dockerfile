@@ -4,11 +4,8 @@ LABEL maintainer="maxmilio@kiv.zcu.cz" \
 
 ARG WORKSPACE_DIR=/workspace
 # Volume for preserving the private & public SSH keys for accessing remote VMs
-ARG PERSISTENT_DATA_DIR=/var/kiv-cloudlet-dev-container-data
-# Volume for mounting the OpenVPN configuration file into the container
-ARG OPENVPN_CONFIG=/etc/OpenVPN-Config.ovpn
-# Volume for passing environment variables
-ARG ENV_CONFIG=/etc/.env
+ARG PERSISTENT_DATA_DIR=/var/cloudlet-dev-container-data
+ARG CONFIG_DIR=/etc/cloudlet-config
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -48,14 +45,14 @@ RUN echo '. /etc/init-dev-container.sh' >> /root/.bashrc ; \
 WORKDIR ${WORKSPACE_DIR}
 
 VOLUME ${WORKSPACE_DIR} ${PERSISTENT_DATA_DIR}
-VOLUME ${PROJECT_DIR}/config/OpenVPN-Config.ovpn ${OPENVPN_CONFIG}
-VOLUME ${PROJECT_DIR}/config/.env ${ENV_CONFIG}
+VOLUME ${PROJECT_DIR}/config ${CONFIG_DIR}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV PERSISTENT_DATA_DIR ${PERSISTENT_DATA_DIR}
-ENV OPENVPN_CONFIG ${OPENVPN_CONFIG}
-ENV ENV_CONFIG ${ENV_CONFIG}
+ENV CONFIG_DIR ${CONFIG_DIR}
+ENV OPENVPN_CONFIG ${CONFIG_DIR}/OpenVPN-Config.ovpn
+ENV ENV_CONFIG ${CONFIG_DIR}/.env
 ENV SHELL /bin/bash
 ENV ANSIBLE_HOST_KEY_CHECKING False
 
