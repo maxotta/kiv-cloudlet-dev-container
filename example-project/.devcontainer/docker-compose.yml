@@ -7,7 +7,6 @@ services:
     devices:
       - /dev/net/tun
     volumes:
-      - "cloudlet-dev-container-data:/var/cloudlet-dev-container-data"
       - "../config:/etc/cloudlet-config:ro"
       - "../..:/workspace"
     extra_hosts:
